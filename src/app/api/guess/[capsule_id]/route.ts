@@ -36,6 +36,7 @@ This is a template Blink - guess submission coming soon!`,
               {
                 name: "action",
                 label: "What would you like to do?",
+                type: "select",
                 required: true,
                 options: [
                   { label: "View Game Details", value: "view" },
