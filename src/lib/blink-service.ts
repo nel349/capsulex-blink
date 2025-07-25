@@ -11,18 +11,17 @@ export interface BlinkActionParams {
 }
 
 export class BlinkService {
-  
   createGetResponse(capsuleId: string): ActionGetResponse {
     return {
       title: `CapsuleX Time Capsule`,
-      icon: new URL("/capsulex-1.png", "https://your-domain.com").toString(), // Update with your domain
+      icon: "https://drive.usercontent.google.com/download?id=1Vk98CgAWpSJ0tac36vx4W4yo9EPxCYhn", // Update with your domain
       description: `🎯 Time Capsule Game for ID: ${capsuleId}
 
 🚀 CapsuleX - Decentralized Time Capsules on Solana
 ⏰ Submit your guess and compete with others!
 🏆 Win prizes when the capsule is revealed
 
-This is a template Blink - guess submission coming soon!`,
+💡 Can't use Blinks? Visit: ${process.env.CAPSULEX_BLINK_BASE_URL || 'https://capsulex-blink-production.up.railway.app'}/game/${capsuleId}`,
       label: "View Capsule",
       links: {
         actions: [

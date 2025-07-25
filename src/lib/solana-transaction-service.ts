@@ -172,11 +172,11 @@ export class SolanaTransactionService {
         publicKey: guesserWallet,
         signTransaction: async () => { throw new Error("This wallet is for instruction building only"); },
         signAllTransactions: async () => { throw new Error("This wallet is for instruction building only"); },
-      };
+      } satisfies Partial<anchor.Wallet>;
       
       const provider = new AnchorProvider(
         this.connection,
-        dummyWallet as any,
+        dummyWallet as unknown as anchor.Wallet,
         { commitment: "confirmed" }
       );
 
@@ -192,13 +192,13 @@ export class SolanaTransactionService {
       // Create the submitGuess instruction using Anchor methods (like your React Native app)
       const instruction = await program.methods
         .submitGuess(guessContent, isAnonymous)
-        .accounts({
+        .accountsPartial({
           guesser: guesserWallet,
           game: pdas.gamePda,
           guess: pdas.guessPda,
           vault: pdas.vaultPda,
           systemProgram: anchor.web3.SystemProgram.programId,
-        } as any)
+        })
         .instruction();
 
       console.log('Created submitGuess instruction:', instruction);
