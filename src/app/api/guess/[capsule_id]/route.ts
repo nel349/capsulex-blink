@@ -7,6 +7,7 @@ import {
 } from "@solana/actions";
 import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
 import { NextRequest, NextResponse } from "next/server";
+import { X_ACTION_VERSION, current_blockchain_id } from "../../constants";
 
 export const GET = async (
   req: NextRequest,
@@ -51,19 +52,36 @@ This is a template Blink - guess submission coming soon!`,
     };
 
     return NextResponse.json(payload, {
-      headers: ACTIONS_CORS_HEADERS,
+      headers: {
+        ...ACTIONS_CORS_HEADERS,
+        "X-Action-Version": X_ACTION_VERSION,
+        "X-Blockchain-Ids": current_blockchain_id,
+      },
     });
   } catch (err) {
     console.error("Error in GET /api/guess/[capsule_id]:", err);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500, headers: ACTIONS_CORS_HEADERS }
+      { 
+        status: 500, 
+        headers: {
+          ...ACTIONS_CORS_HEADERS,
+          "X-Action-Version": X_ACTION_VERSION,
+          "X-Blockchain-Ids": current_blockchain_id,
+        }
+      }
     );
   }
 };
 
 export const OPTIONS = async () => {
-  return new Response(null, { headers: ACTIONS_CORS_HEADERS });
+  return new Response(null, { 
+    headers: {
+      ...ACTIONS_CORS_HEADERS,
+      "X-Action-Version": X_ACTION_VERSION,
+      "X-Blockchain-Ids": current_blockchain_id,
+    }
+  });
 };
 
 export const POST = async (
@@ -81,7 +99,14 @@ export const POST = async (
     } catch {
       return NextResponse.json(
         { error: "Invalid account provided" },
-        { status: 400, headers: ACTIONS_CORS_HEADERS }
+        { 
+          status: 400, 
+          headers: {
+            ...ACTIONS_CORS_HEADERS,
+            "X-Action-Version": X_ACTION_VERSION,
+            "X-Blockchain-Ids": current_blockchain_id,
+          }
+        }
       );
     }
 
@@ -130,13 +155,24 @@ export const POST = async (
     });
 
     return NextResponse.json(payload, {
-      headers: ACTIONS_CORS_HEADERS,
+      headers: {
+        ...ACTIONS_CORS_HEADERS,
+        "X-Action-Version": X_ACTION_VERSION,
+        "X-Blockchain-Ids": current_blockchain_id,
+      },
     });
   } catch (err) {
     console.error("Error in POST /api/guess/[capsule_id]:", err);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500, headers: ACTIONS_CORS_HEADERS }
+      { 
+        status: 500, 
+        headers: {
+          ...ACTIONS_CORS_HEADERS,
+          "X-Action-Version": X_ACTION_VERSION,
+          "X-Blockchain-Ids": current_blockchain_id,
+        }
+      }
     );
   }
 };
