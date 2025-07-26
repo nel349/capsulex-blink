@@ -14,8 +14,8 @@ export async function GET(
   // For now, we'll assume mobile users might have the app installed
   
   if (isMobile) {
-    // Try deep link first, with web fallback
-    const deepLink = `capsulex://game/${capsule_id}`;
+    // Try deep link first, with web fallback - use specific 'guess' action
+    const deepLink = `capsulex://game/${capsule_id}/guess`;
     const webFallback = `https://capsulex.xyz/game/${capsule_id}`; // Update with your web app URL
     
     // Create a page that attempts deep link with fallback
