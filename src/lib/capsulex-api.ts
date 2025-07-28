@@ -61,6 +61,51 @@ interface GameDetails {
   is_revealed: boolean;
 }
 
+interface LeaderboardEntry {
+  rank: number;
+  wallet_address: string;
+  display_name: string;
+  total_points: number;
+  games_won: number;
+  games_participated: number;
+  games_created?: number;
+  win_rate: number;
+  badge_count: number;
+  is_current_user: boolean;
+}
+
+interface UserStats {
+  wallet_address: string;
+  display_name: string;
+  total_points: number;
+  games_won: number;
+  games_participated: number;
+  games_created?: number;
+  win_rate: number;
+  badge_count: number;
+  global_rank: number | null;
+  recent_achievements: Achievement[];
+}
+
+interface Achievement {
+  type: 'win' | 'participation' | 'badge';
+  game_id: string;
+  points_earned: number;
+  timestamp: string;
+  description?: string;
+}
+
+interface GameLeaderboardEntry {
+  rank: number;
+  wallet_address: string;
+  display_name: string;
+  points_earned: number;
+  is_winner: boolean;
+  guess_content: string;
+  submitted_at: string;
+  is_anonymous: boolean;
+}
+
 class CapsuleXAPIService {
   private api: AxiosInstance;
 
@@ -131,7 +176,67 @@ class CapsuleXAPIService {
       throw error;
     }
   }
+
+  async getGlobalLeaderboard(limit: number = 50, offset: number = 0): Promise<LeaderboardEntry[]> {
+    try {
+      const response = await this.api.get(`/api/leaderboard/global`, {
+        params: { limit, offset }
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.error || 'Failed to fetch global leaderboard');
+      }
+
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(`Failed to fetch global leaderboard: ${error.response?.data?.error || error.message}`);
+      }
+      throw error;
+    }
+  }
+
+  async getUserStats(walletAddress: string): Promise<UserStats> {
+    try {
+      const response = await this.api.get(`/api/leaderboard/user/${walletAddress}`);
+      
+      if (!response.data.success) {
+        throw new Error(response.data.error || 'Failed to fetch user stats');
+      }
+
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(`Failed to fetch user stats: ${error.response?.data?.error || error.message}`);
+      }
+      throw error;
+    }
+  }
+
+  async getGameLeaderboard(capsuleId: string): Promise<GameLeaderboardEntry[]> {
+    try {
+      const response = await this.api.get(`/api/leaderboard/game/${capsuleId}`);
+      
+      if (!response.data.success) {
+        throw new Error(response.data.error || 'Failed to fetch game leaderboard');
+      }
+
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(`Failed to fetch game leaderboard: ${error.response?.data?.error || error.message}`);
+      }
+      throw error;
+    }
+  }
 }
 
 export const capsuleXAPI = new CapsuleXAPIService();
-export type { CapsuleDetails, GameDetails };
+export type { 
+  CapsuleDetails, 
+  GameDetails, 
+  LeaderboardEntry, 
+  UserStats, 
+  Achievement, 
+  GameLeaderboardEntry 
+};

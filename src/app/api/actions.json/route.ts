@@ -10,6 +10,16 @@ export const GET = async () => {
         pathPattern: "/api/guess/**",
         apiPath: "/api/guess/**",
       },
+      // Map game details routes
+      {
+        pathPattern: "/api/game-details/**",
+        apiPath: "/api/game-details/**",
+      },
+      // Map game leaderboard routes
+      {
+        pathPattern: "/api/game-leaderboard/**",  
+        apiPath: "/api/game-leaderboard/**",
+      },
     ],
   };
 

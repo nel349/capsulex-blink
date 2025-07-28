@@ -80,6 +80,10 @@ export const POST = async (
     const guessContent = data?.guess_content as string;
     const isAnonymous = data?.is_anonymous === "true" || data?.is_anonymous === true;
 
+    console.log("🔍 action: ", action);
+    console.log("🔍 guessContent: ", guessContent);
+    console.log("🔍 isAnonymous: ", isAnonymous);
+
     // Create transaction response using service
     const payload = await blinkService.createPostResponse({
       capsuleId: capsule_id,
